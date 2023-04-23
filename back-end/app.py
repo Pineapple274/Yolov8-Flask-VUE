@@ -50,6 +50,7 @@ def upload_file():
         file.save(src_path)
         shutil.copy(src_path, './tmp/ct')
         image_path = os.path.join('./tmp/ct', file.filename)
+        print(file.filename.rsplit('.', 1)[1])
         pid, image_info = core.main.c_main(
             image_path, current_app.model, file.filename.rsplit('.', 1)[1])
         return jsonify({'status': 1,
@@ -70,12 +71,21 @@ def download_file():
 @app.route('/tmp/<path:file>', methods=['GET'])
 def show_photo(file):
     if request.method == 'GET':
+        print(file)
         if not file is None:
             image_data = open(f'tmp/{file}', "rb").read()
             response = make_response(image_data)
             response.headers['Content-Type'] = 'image/png'
             return response
 
+# @app.route('/runs/detect', methods=['GET'])
+# def show_photo(file):
+#     if request.method == 'GET':
+#         if not file is None:
+#             image_data = open(f'tmp/{file}', "rb").read()
+#             response = make_response(image_data)
+#             response.headers['Content-Type'] = 'image/png'
+#             return response
 
 if __name__ == '__main__':
     with app.app_context():

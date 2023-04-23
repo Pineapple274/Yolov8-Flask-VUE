@@ -5,6 +5,7 @@ from utils.general import non_max_suppression, scale_coords, letterbox
 from utils.torch_utils import select_device
 import cv2
 from random import randint
+from ultralytics import YOLO
 
 
 class Detector(object):
@@ -17,12 +18,13 @@ class Detector(object):
 
     def init_model(self):
 
+        self.model = YOLO('../weights/best.pt')
         self.weights = 'weights/final.pt'
         self.device = '0' if torch.cuda.is_available() else 'cpu'
         self.device = select_device(self.device)
         model = attempt_load(self.weights, map_location=self.device)
         model.to(self.device).eval()
-        model.half()
+        model.float()
         # torch.save(model, 'test.pt')
         self.m = model
         self.names = model.module.names if hasattr(
@@ -38,7 +40,7 @@ class Detector(object):
         img = img[:, :, ::-1].transpose(2, 0, 1)
         img = np.ascontiguousarray(img)
         img = torch.from_numpy(img).to(self.device)
-        img = img.half()  # 半精度
+        img = img.float()  # 半精度
         img /= 255.0  # 图像归一化
         if img.ndimension() == 3:
             img = img.unsqueeze(0)
@@ -64,6 +66,10 @@ class Detector(object):
 
     def detect(self, im):
 
+        results = self.model(im, save=False)
+        res_plotted = results[0].plot()
+        # print(res_plotted)
+        # print(results)
         im0, img = self.preprocess(im)
 
         pred = self.m(img, augment=False)[0]
@@ -90,4 +96,5 @@ class Detector(object):
                         x2-x1, y2-y1), np.round(float(conf), 3)]
 
         im = self.plot_bboxes(im, pred_boxes)
-        return im, image_info
+        print(image_info)
+        return res_plotted, image_info
