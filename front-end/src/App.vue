@@ -1,8 +1,22 @@
 <template>
   <div id="app">
-    <app-header></app-header>
-    <app-content></app-content>
-    <app-footer></app-footer>
+    <b-container>
+      <b-row>
+        <b-col cols="12">
+          <app-header></app-header>
+          <!-- 这里放置第一列 -->
+        </b-col>
+        <b-col cols="12">
+          <app-content></app-content>
+          <!-- 这里放置第二列 -->
+        </b-col>
+        <b-col cols="12">
+          <app-footer></app-footer>
+          <!-- 这里放置第三列 -->
+        </b-col>
+      </b-row>
+
+    </b-container>
   </div>
 </template>
 
