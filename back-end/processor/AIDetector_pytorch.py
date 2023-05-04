@@ -69,7 +69,7 @@ class Detector(object):
         results = self.model(im, save=False)
         res_plotted = results[0].plot()
         # print(res_plotted)
-        # print(results)
+        print(results[0].boxes.data)
         im0, img = self.preprocess(im)
 
         pred = self.m(img, augment=False)[0]

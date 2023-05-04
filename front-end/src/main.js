@@ -6,6 +6,11 @@ import VueRouter from 'vue-router'
 import axios from 'axios'
 import Element from 'element-ui'
 import echarts from "echarts";
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+Vue.use(BootstrapVue)
 
 Vue.prototype.$echarts = echarts;
 import '../node_modules/element-ui/lib/theme-chalk/index.css'
@@ -15,6 +20,7 @@ import './theme/index.css'
 Vue.use(Element)
 Vue.config.productionTip = false
 Vue.use(VueRouter)
+Vue.use(BootstrapVue)
 Vue.prototype.$http = axios
 
 const router = new VueRouter({
